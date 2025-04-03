@@ -9,8 +9,8 @@ export function Camera() {
     const camera = new THREE.OrthographicCamera(
         WIDTH / -2, //left
         WIDTH / 2, ///right
-        HEIGHT / - 2, ////Top
-        HEIGHT / 2, ////Bottom
+        HEIGHT / 2, ////Top
+        HEIGHT / - 2, ////Bottom
         100, ///Near,
         900 ///Far
     )
