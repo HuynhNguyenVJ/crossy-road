@@ -3,20 +3,60 @@ import "./style.css";
 
 import { Renderer } from "./components/Renderer";
 import { Camera } from "./components/Camera";
-import { player } from "./components/Player";
+import { initializePlayer, player } from "./components/Player";
+import { map, initializeMap } from "./components/Map";
+import { DirectionalLight } from "./components/DirectionalLight";
+import { animateVehicles } from "./components/Animate/Vehicle";
+import "./functions/playerMove";
+import { animatePlayer } from "./components/Animate/Player";
+import { hitTest } from "./functions/hitTest";
+
+const resultDOM = document.getElementById("result-container");
+const scoreDOM = document.getElementById("score");
+const finalScoreDOM = document.getElementById("final-score");
+
+export let isGameOver = false;
+
+export function updateGameStatus(status) {
+    isGameOver = status;
+}
+
+document.getElementById("retry").addEventListener("click", () => {
+    initializeGame();
+    updateGameStatus(false);
+})
 
 const scene = new THREE.Scene();
 scene.add(player)
+scene.add(map)
 
 const ambientLight = new THREE.AmbientLight();
 scene.add(ambientLight);
 
-const dirLight = new THREE.DirectionalLight();
-dirLight.position.set(-100, -100, 200);
-scene.add(dirLight);
+const dirLight = DirectionalLight();
+dirLight.target = player;
+player.add(dirLight);
 
 const camera = Camera();
-scene.add(camera)
+player.add(camera)
+
+initializeGame();
+
+function initializeGame(){
+    initializeMap();
+    initializePlayer();
+
+    resultDOM.style.visibility = "hidden";
+    scoreDOM.innerText = "0";
+    finalScoreDOM.innerText = "0";
+}
 
 const renderer = Renderer();
-renderer.render(scene, camera)
+renderer.setAnimationLoop(animate);
+
+function animate(){
+    animateVehicles();
+    animatePlayer();
+    hitTest();
+    renderer.render(scene, camera)
+}
