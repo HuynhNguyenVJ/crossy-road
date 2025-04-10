@@ -11,8 +11,23 @@ function getCarFrontContext(){
     context.fillStyle = "#ffffff";
     context.fillRect(0,0,64,32);
 
-    context.fillStyle = "#444";
-    context.fillRect(8,8,48,24);
+    context.fillStyle = "#666";
+    context.fillRect(15,5,55,24);
+
+    return new THREE.CanvasTexture(canvas);
+}
+
+function getCarBackContext(){
+    const canvas = document.createElement("canvas");
+    canvas.width = 64;
+    canvas.height = 32;
+    const context = canvas.getContext("2d");
+
+    context.fillStyle = "#ffffff";
+    context.fillRect(0,0,64,32);
+
+    context.fillStyle = "#666";
+    context.fillRect(0,5,45,24);
 
     return new THREE.CanvasTexture(canvas);
 }
@@ -52,19 +67,19 @@ export function Car(initialTileIndex, direction, color){
     car.add(main);
 
     const carFront = getCarFrontContext();
-    // carFront.center = new THREE.Vector2(0.5,0,5);
-    // carFront.rotation = Math.PI / 2;
+    const carBack = getCarBackContext();
 
-    const carBack = getCarFrontContext();
     const carRight = getCarSideContext();
+    carRight.flipY = direction;
+
     const carLeft = getCarSideContext();
 
     const cabin = new THREE.Mesh(
         new THREE.BoxGeometry(33,24,12),
         [
             new THREE.MeshLambertMaterial({ map: carFront, flatShading: true }),
-            new THREE.MeshLambertMaterial({ map: carRight, flatShading: true }),
             new THREE.MeshLambertMaterial({ map: carBack, flatShading: true }),
+            new THREE.MeshLambertMaterial({ map: carRight, flatShading: true }),
             new THREE.MeshLambertMaterial({ map: carLeft, flatShading: true }),
             new THREE.MeshLambertMaterial({
                 color: "white",
