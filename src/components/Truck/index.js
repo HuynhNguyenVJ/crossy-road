@@ -12,10 +12,49 @@ function getCarFrontContext(color){
     context.fillRect(0,0,30,30);
 
     context.fillStyle = "#666";
-    context.fillRect(15,5,55,24);
+    context.fillRect(5,0,10,30);
 
-    var texture = new THREE.CanvasTexture(canvas);
-    texture.needsUpdate = true;
+    ////Fix Texture Color washed-out or darkened colors
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.colorSpace = THREE.SRGBColorSpace;
+
+    return texture;
+}
+
+function getCarRightSideContext(color){
+    const canvas = document.createElement("canvas");
+    canvas.width = 30;
+    canvas.height = 30;
+    const context = canvas.getContext("2d");
+
+    context.fillStyle = color;
+    context.fillRect(0,0,30,30);
+
+    context.fillStyle = "#666";
+    context.fillRect(15,5,15,10);
+
+    ////Fix Texture Color washed-out or darkened colors
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.colorSpace = THREE.SRGBColorSpace;
+
+    return texture;
+}
+
+function getCarLeftSideContext(color){
+    const canvas = document.createElement("canvas");
+    canvas.width = 30;
+    canvas.height = 30;
+    const context = canvas.getContext("2d");
+
+    context.fillStyle = color;
+    context.fillRect(0,0,30,30);
+
+    context.fillStyle = "#666";
+    context.fillRect(15,15,15,10);
+
+    ////Fix Texture Color washed-out or darkened colors
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.colorSpace = THREE.SRGBColorSpace;
 
     return texture;
 }
@@ -41,31 +80,19 @@ export function Truck(initialIndex, direction, color){
 
     const newColor = "#" + color.toString(16);
     const carFront = getCarFrontContext(newColor);
+    const carRight = getCarRightSideContext(newColor);
+    const carLeft = getCarLeftSideContext(newColor);
+    carLeft.center = new THREE.Vector2(0.5,0.5);
 
     const cabin = new THREE.Mesh(
         new THREE.BoxGeometry(30,30,30),
         [
             new THREE.MeshLambertMaterial({ map: carFront, flatShading: true }),
-            new THREE.MeshLambertMaterial({
-                color,
-                flatShading: true,
-            }),
-            new THREE.MeshLambertMaterial({
-                color,
-                flatShading: true,
-            }),
-            new THREE.MeshLambertMaterial({
-                color,
-                flatShading: true,
-            }),
-            new THREE.MeshLambertMaterial({
-                color,
-                flatShading: true,
-            }),
-            new THREE.MeshLambertMaterial({
-                color,
-                flatShading: true,
-            })
+            new THREE.MeshLambertMaterial({ color, flatShading: true, }),
+            new THREE.MeshLambertMaterial({ map: carLeft, flatShading: true }),
+            new THREE.MeshLambertMaterial({ map: carRight, flatShading: true }),
+            new THREE.MeshLambertMaterial({ color, flatShading: true, }),
+            new THREE.MeshLambertMaterial({ color, flatShading: true, }),
         ]
     )
     cabin.position.x = 35;

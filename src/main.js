@@ -52,10 +52,13 @@ function initializeGame(){
 }
 
 const renderer = Renderer();
+////Fix Texture Color washed-out or darkened colors
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.useLegacyLights = false
 renderer.setAnimationLoop(animate);
 
 function animate(){
-    // animateVehicles();
+    animateVehicles();
     animatePlayer();
     hitTest();
     renderer.render(scene, camera)

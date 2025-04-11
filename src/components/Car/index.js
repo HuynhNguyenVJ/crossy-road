@@ -8,13 +8,17 @@ function getCarFrontContext(){
     canvas.height = 32;
     const context = canvas.getContext("2d");
 
-    context.fillStyle = "#ffffff";
+    context.fillStyle = "#fff";
     context.fillRect(0,0,64,32);
 
     context.fillStyle = "#666";
     context.fillRect(15,5,55,24);
 
-    return new THREE.CanvasTexture(canvas);
+    ////Fix Texture Color washed-out or darkened colors
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.colorSpace = THREE.SRGBColorSpace;
+
+    return texture;
 }
 
 function getCarBackContext(){
@@ -23,13 +27,17 @@ function getCarBackContext(){
     canvas.height = 32;
     const context = canvas.getContext("2d");
 
-    context.fillStyle = "#ffffff";
+    context.fillStyle = "#fff";
     context.fillRect(0,0,64,32);
 
     context.fillStyle = "#666";
     context.fillRect(0,5,45,24);
 
-    return new THREE.CanvasTexture(canvas);
+    ////Fix Texture Color washed-out or darkened colors
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.colorSpace = THREE.SRGBColorSpace;
+
+    return texture;
 }
 
 function getCarSideContext(){
@@ -45,7 +53,11 @@ function getCarSideContext(){
     context.fillRect(10,8,38,24);
     context.fillRect(58,8,60,24);
 
-    return new THREE.CanvasTexture(canvas);
+    ////Fix Texture Color washed-out or darkened colors
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.colorSpace = THREE.SRGBColorSpace;
+
+    return texture;
 }
 
 export function Car(initialTileIndex, direction, color){
